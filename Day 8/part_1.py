@@ -20,6 +20,7 @@ d_copy = puzzle_data()
 antinode_cords = set()
 start = datetime.datetime.now()
 
+max_x = len(data)
 
 antenna_cords = {}
 
@@ -49,8 +50,10 @@ for k, v in antenna_cords.items():
             )
         ]:
 
-            if 0 <= x < len(data[0]) and  0 <= y < len(data[0]):
+            if 0 <= x <  and max_x 0 <= y < max_x:
                 antinode_cords.add((x, y))
+            else:
+                break
 
 end = datetime.datetime.now()
 
