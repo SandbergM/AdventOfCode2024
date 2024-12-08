@@ -4,78 +4,56 @@ from data import (
 )
 
 import datetime
-
+from itertools import combinations
 
 data = puzzle_data()
 
 antennas = "".join(["".join(i) for i in data])
-print(set([x for x in antennas if x != "."]))
 antennas = set([x for x in antennas if x != "."])
-
 indexes = {}
 
 x_max = len(data) + 1
 x_min = -1
 y_max = len(data[0]) + 1
 y_min = -1
-
+d_copy = puzzle_data()
 antinode_cords = set()
-antinodes = set()
 start = datetime.datetime.now()
 
+
+antenna_cords = {}
+
 for idx in range(len(data)):
-
     for jdx in range(len(data[idx])):
+        if data[idx][jdx] != ".":
+            if antenna_cords.get(data[idx][jdx]) is None:
+                antenna_cords[data[idx][jdx]] = []
+            antenna_cords[data[idx][jdx]].append((idx, jdx))
 
-        if data[idx][jdx] in antennas:
 
-            if indexes.get(data[idx][jdx]) is None:
-                indexes[data[idx][jdx]] = []
+for k, v in antenna_cords.items():
 
-            indexes[data[idx][jdx]].append((idx, jdx))
+    for a, b in combinations(v, r=2):
+        
+        a_x, a_y = a
+        b_x, b_y = b
 
-for a_type, a_cords in indexes.items():
+        for x, y in [
+            (
+                a_x - (b_x - a_x),
+                a_y - (b_y - a_y)
+            ),
+            (
+                b_x + (b_x - a_x),
+                b_y + (b_y - a_y)
+            )
+        ]:
 
-    for idx in range(len(a_cords)):
-
-        for jdx in range(len(a_cords)):
-
-            if idx == jdx:
-                continue
-
-            cord_a = a_cords[idx]
-            cord_b = a_cords[jdx]
-
-            x_a, y_a = cord_a
-            x_b, y_b = cord_b
-
-            x_a_diff = x_a - x_b
-            y_a_diff = y_a - y_b
-
-            x_b_diff = x_b - x_a
-            y_b_diff = y_b - y_a
-
-            for c in [
-                (x_a + x_a_diff, y_a + y_a_diff),
-                (x_b + x_b_diff, y_b + y_b_diff),
-            ]:
-                c_a, c_b = c
-
-                if 0 <= c_a < len(data) and 0 <= c_b < len(data[0]):
-                    if data[c_a][c_b] == ".":
-                        antinode_cords.add(f"{sorted([ x_a, y_a, x_b, y_b])}|{c_a},{c_b}")
-
+            if 0 <= x < len(data[0]) and  0 <= y < len(data[0]):
+                antinode_cords.add((x, y))
 
 end = datetime.datetime.now()
 
-# for anti in antinode_cords:
-#     print(anti)
-#     _, cords = anti.split("|")
-#     a, b = [int(x) for x in cords.split(",")]
-#     data[a][b] = "X"
 
-# for d in data:
-#     print("".join(d))
-
-print(len(antinode_cords))
+print("Ans : ", len(antinode_cords))
 print(f"Time taken: {(end - start).total_seconds() * 1000:.2f} ms")
