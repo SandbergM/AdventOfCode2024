@@ -5,6 +5,8 @@ import datetime
 
 data = puzzle_data()
 
+start = datetime.datetime.now()
+
 antennas = "".join(["".join(i) for i in data])
 antennas = set([x for x in antennas if x != "."])
 indexes = {}
@@ -13,7 +15,7 @@ x_max = len(data)
 y_max = len(data[0])
 antinode_cords = set()
 
-start = datetime.datetime.now()
+
 
 antenna_cords = {}
 
