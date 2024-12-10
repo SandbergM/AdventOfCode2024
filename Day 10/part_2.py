@@ -12,7 +12,7 @@ for i in range(len(data)):
         if data[i][j] == 0:
             starts.append((i, j))
 
-def valid_steps(x, y, data, visited):
+def valid_steps(x, y, data):
 
     next_steps = []
     
@@ -28,9 +28,6 @@ def valid_steps(x, y, data, visited):
         new_x = x + step[0]
         new_y = y + step[1]
 
-        if (new_x, new_y) in visited:
-            continue
-
         if 0 <= new_x < len(data) and 0 <= new_y < len(data[new_x]):
             if data[new_x][new_y] == data[x][y] + 1:
                 next_steps.append((new_x, new_y))
@@ -41,20 +38,16 @@ ans = 0
 
 for x, y in starts:
 
-    visited = set()
     steps = [(x,y)]
 
     while steps:
 
         x, y = steps.pop(0)
 
-        if (x, y) in visited:
-            continue
-
         if data[x][y] == 9:
             ans += 1
         else:
-            steps.extend(valid_steps(x, y, data, visited))
+            steps.extend(valid_steps(x, y, data))
 
 
 end = datetime.datetime.now()
