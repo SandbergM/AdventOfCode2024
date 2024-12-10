@@ -7,9 +7,7 @@ data = puzzle_data()
 start = datetime.datetime.now()
 
 res = []
-jdx = 0
-ans = 0
-x = ""
+
 
 class Element:
 
@@ -40,6 +38,8 @@ class Element:
         self.used_space = sum([ 1 if el is not None else 0 for el in self.elements])
         self.free_space = sum([ 1 if el is None else 0 for el in self.elements])
 
+
+jdx = 0
 for idx, el in enumerate(data):
     
     if idx % 2 == 0 and el != 0:
@@ -51,7 +51,6 @@ for idx, el in enumerate(data):
 
 
 idx = len(res) - 1
-
 while True:
 
     current_element = res[idx]
