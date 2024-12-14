@@ -15,7 +15,7 @@ def func(n, iterations):
         cur_counts = {}
 
         for num, count in counts.items():
-
+            
             num_str = str(num)
 
             if num == 0:
@@ -37,7 +37,7 @@ def func(n, iterations):
 ans = 0
 
 for n in data:
-    ans += func(n, 75)
+    ans += func(n, 1)
 
 end = datetime.datetime.now()
 
