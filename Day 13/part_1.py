@@ -7,7 +7,8 @@ data = example_data()
 start = datetime.datetime.now()
 
 ans = 0
-print(data)
+for el in data:
+    print(el)
 
 end = datetime.datetime.now()
 
