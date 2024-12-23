@@ -14,8 +14,6 @@ for _ in range(runs):
 
     start_time = time.time()
 
-    ### LOGIC STARTS HERE ###
-
     a, b = data
     a.sort()
     b.sort()
@@ -25,8 +23,6 @@ for _ in range(runs):
 
     for x,y in zip(a,b):
         ans += x * counts_b[x]
-
-    ### LOGIC ENDS HERE ###
 
     end_time = time.time()
     total_time += (end_time - start_time) * 1000

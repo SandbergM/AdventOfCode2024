@@ -2,7 +2,7 @@ from data import puzzle_data, example_data
 import datetime
 import heapq
 
-data = puzzle_data()
+data = example_data()
 
 start = datetime.datetime.now()
 
@@ -17,7 +17,7 @@ def dijkstra(graph, start):
     heapq.heappush(priority_queue, (0, start, ""))
     distances = {node: float('inf') for node in graph}
     distances[start] = 0
-    previous_nodes = {node: None for node in graph}
+    previous_nodes = {node: [] for node in graph}
 
     while priority_queue:
 
@@ -33,15 +33,16 @@ def dijkstra(graph, start):
             neighbor_direction = directions.get((xa - xb, yy - yb), "")
             distance = current_distance + (1000 if direction and direction != neighbor_direction else 0) + 1
 
-            if distance < distances[neighbor]:
+            if distance <= distances[neighbor]:
                 distances[neighbor] = distance
                 heapq.heappush(priority_queue, (distance, neighbor, neighbor_direction))
-                previous_nodes[neighbor] = current_node
+                previous_nodes[neighbor].append(current_node)
 
     return distances, previous_nodes
 
 graph = {}
 rotations = {"north": (-1, 0), "south": (1, 0), "east": (0, 1), "west": (0, -1)}
+
 for idx in range(len(data)):
     for jdx in range(len(data[0])):
         if inbounds(idx, jdx, data):
@@ -65,21 +66,23 @@ for idx, line in enumerate(data):
 if start_node and end_node:
     distances, previous_nodes = dijkstra(graph, start_node)
 
-    def reconstruct_path(previous_nodes, start, end):
+def reconstruct_path(previous_nodes, start, end):
 
-        path = []
-        current = end
-
-        while current:
-            path.append(current)
-            current = previous_nodes[current]
-        path.reverse()
-
-        return path if path[0] == start else []
-
-    shortest_path = reconstruct_path(previous_nodes, start_node, end_node)
+    path = []
+    nodes = [end]
+    d = example_data()
+    while nodes:
+        current = nodes.pop()
+        x, y = current
+        d[x][y] = "O"
+        path.append(current)
+        nodes.extend(previous_nodes[current])
+    for line in d:
+        print("".join(line))
+    return len(set(path))
 
 
 end = datetime.datetime.now()
 print("Ans:", distances[end_node])
+print("Ans:", reconstruct_path(previous_nodes, start_node, end_node))
 print(f"Time taken: {(end - start).total_seconds() * 1000:.2f} ms")
