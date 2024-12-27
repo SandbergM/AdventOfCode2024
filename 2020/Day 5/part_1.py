@@ -11,6 +11,7 @@ for boarding_pass in data:
 
     r, c = (0,127), (0, 7)
     rd, cd = 0, 0
+    
     for action in list(boarding_pass):
         
         rdiff = r[1] - r[0]
